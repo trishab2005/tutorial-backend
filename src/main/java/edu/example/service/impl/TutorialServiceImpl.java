@@ -1,5 +1,7 @@
 package edu.example.service.impl;
 
+import edu.example.config.Convert;
+import edu.example.dto.TutorialDto;
 import edu.example.entity.Tutorial;
 import edu.example.exception.TutorialNotFoundException;
 import edu.example.repository.TutorialRepository; // Import your repository
@@ -21,30 +23,32 @@ public class TutorialServiceImpl implements TutorialService {
     }
 
     @Override
-    public Tutorial addTutorial(Tutorial tutorial) {
-        return tutorialRepository.save(tutorial);
+    public TutorialDto addTutorial(TutorialDto tutorial) {
+        Tutorial toBeSaved= Convert.dtoToEntity(tutorial);
+        Tutorial saved= tutorialRepository.save(toBeSaved);
+        return Convert.EntityToDto(saved);
     }
 
     @Override
-    public List<Tutorial> getAllTutorials() {
-        return tutorialRepository.findAll().stream().filter(t->t.getTitle()!=null).toList();
+    public List<TutorialDto> getAllTutorials() {
+        return tutorialRepository.findAll().stream().map(Convert::EntityToDto).toList(); // THIS MAP IS COMING FROM STREAM
     }
 
     @Override
-    public Optional<Tutorial> getTutorialById(Long id) {
-        return tutorialRepository.findById(id);
+    public Optional<TutorialDto> getTutorialById(Long id) {
+        return tutorialRepository.findById(id).map(Convert::EntityToDto); // THIS MAP IS COMING FROM OPTIONAL
     }
 
     @Override
-    public Tutorial updateTutorial(Long id, Tutorial tutorial) {
+    public TutorialDto updateTutorial(Long id, TutorialDto tutorialDto) {
         Tutorial existing = tutorialRepository.findById(id)
                 .orElseThrow(() -> new TutorialNotFoundException("Tutorial not found with id: " + id));
 
-        existing.setTitle(tutorial.getTitle());
-        existing.setDescription(tutorial.getDescription());
-        existing.setPublished(tutorial.getPublished());
-
-        return tutorialRepository.save(existing);
+        existing.setTitle(tutorialDto.getTitle());
+        existing.setDescription(tutorialDto.getDescription());
+        existing.setPublished(tutorialDto.getPublished());
+        Tutorial updated = tutorialRepository.save(existing);
+        return Convert.EntityToDto(updated);
     }
 
     @Override

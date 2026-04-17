@@ -1,5 +1,6 @@
 package edu.example.controller;
 
+import edu.example.dto.TutorialDto;
 import edu.example.entity.Tutorial;
 import edu.example.service.TutorialService;
 import lombok.AllArgsConstructor;
@@ -18,21 +19,21 @@ public class TutorialController {
 
     @PostMapping
     // http://localhost:8888/api/tutorials
-    public ResponseEntity<Tutorial> createTutorial(@RequestBody Tutorial tutorial) {
-        Tutorial createdTutorial = tutorialService.addTutorial(tutorial);
+    public ResponseEntity<TutorialDto> createTutorial(@RequestBody TutorialDto tutorialDto) {
+        TutorialDto createdTutorial = tutorialService.addTutorial(tutorialDto);
         return new ResponseEntity<>(createdTutorial, HttpStatus.CREATED);
     }
 
     @GetMapping
     // http://localhost:8888/api/tutorials
-    public ResponseEntity<List<Tutorial>> getAllTutorials() {
-        List<Tutorial> tutorials = tutorialService.getAllTutorials();
+    public ResponseEntity<List<TutorialDto>> getAllTutorials() {
+        List<TutorialDto> tutorials = tutorialService.getAllTutorials();
         return new ResponseEntity<>(tutorials, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     // http://localhost:8888/api/tutorials/1
-    public ResponseEntity<Tutorial> getTutorialById(@PathVariable Long id) {
+    public ResponseEntity<TutorialDto> getTutorialById(@PathVariable Long id) {
         return tutorialService.getTutorialById(id)
                 .map(tutorial -> new ResponseEntity<>(tutorial, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -40,8 +41,8 @@ public class TutorialController {
 
     @PutMapping("/{id}")
     // http://localhost:8888/api/tutorials/1
-    public ResponseEntity<Tutorial> updateTutorial(@PathVariable Long id, @RequestBody Tutorial tutorial) {
-        Tutorial updatedTutorial = tutorialService.updateTutorial(id, tutorial);
+    public ResponseEntity<TutorialDto> updateTutorial(@PathVariable Long id, @RequestBody TutorialDto tutorial) {
+        TutorialDto updatedTutorial = tutorialService.updateTutorial(id, tutorial);
         return new ResponseEntity<>(updatedTutorial, HttpStatus.OK);
     }
 

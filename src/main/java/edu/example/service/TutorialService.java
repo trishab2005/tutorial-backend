@@ -1,16 +1,16 @@
 package edu.example.service;
 
-import edu.example.entity.Tutorial;
+import edu.example.dto.TutorialDto;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface TutorialService {
 
-    Tutorial addTutorial(Tutorial tutorial);
-    List<Tutorial> getAllTutorials();
-    Optional<Tutorial> getTutorialById(Long id);
-    Tutorial updateTutorial(Long id, Tutorial tutorial);
+    TutorialDto addTutorial(TutorialDto tutorialdto);
+    List<TutorialDto> getAllTutorials();
+    Optional<TutorialDto> getTutorialById(Long id);
+    TutorialDto updateTutorial(Long id, TutorialDto tutorialDto);
     String deleteTutorial(Long id);
 
 }
